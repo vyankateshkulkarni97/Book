@@ -1,0 +1,56 @@
+{% load static %}
+<html>
+    <body style="background-color:skyblue;">
+    <head>
+        <title>Welcome to Labrary page</title>
+        <link href="{% static 'css/bootstrap.min.css'%}" rel="stylesheet" >
+    </head>
+    <style>
+        .required::before{
+            content: " * ";
+            color: red;
+        }
+    </style>
+
+    <body style = "color:black">
+        <h2> Library Application</h2><hr>
+        <form action="{% url 'home_page' %}" method="post">
+            {% csrf_token %}
+
+            {% if single_book%}
+            <label class="required"> Book ID :- </label>
+                <input type="text" name="book_id" value="{{single_book.id}}" readonly><br><br>
+            {% endif %}
+            
+            <label class="required"> Name :- </label>
+            <input type="text" name="book_name" value="{{single_book.name}}" placeholder="Enter book name" required><br><br>
+            <label class="required"> Quantity:-  </label>
+            <input type="number" name="book_qty" value="{{single_book.qty}}" required><br><br>
+            <label class="required"> Price :-</label>
+            <input type="number" name="book_price" value="{{single_book.price}}" required><br><br>
+            <label class="required"> Author :- </label>
+            <input type="text" name="book_author" value="{{single_book.author}}" required><br><br>          
+            
+            <label class="required :-"> Is Published :- </label>
+            {% if single_book %}
+                {% if single_book.is_published == True %}
+                    YES <input type="radio" name="book_is_pub" value="Yes" checked> NO <input type="radio" name="book_is_pub" value="No"><br><br>
+                {% else %}
+                    YES <input type="radio" name="book_is_pub" value="Yes" > NO <input type="radio" name="book_is_pub" value="No" checked><br><br>
+                {% endif %}
+            {% else %}
+                YES <input type="radio" name="book_is_pub" value="Yes" > | NO <input type="radio" name="book_is_pub" value="No"><br>
+            {% endif %}
+            
+            
+            &emsp; <input type="submit" class="btn btn-primary" value="Submit"> &ensp; &emsp; 
+            &emsp; <input type="reset" value="Reset">
+
+        </form>
+    <a href="{% url 'all_active_books' %}"class="btn btn-warning">Show Active Books</a>
+    
+    <a href="{% url 'all_inactive_books' %}" class="btn btn-warning">Show In-Active Books</a>
+
+    </body>
+</body>
+</html>

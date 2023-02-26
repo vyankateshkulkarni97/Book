@@ -1,0 +1,74 @@
+{% load static %}
+<html>
+    <head>
+        <title>Book details</title>
+        <link href="{% static 'css/bootstrap.min.css'%}" rel="stylesheet" >
+    </head>
+    <style>
+        table , th , td {
+            border: 1px solid black;
+        }
+    </style>
+
+    <body>
+    {% if books %}
+    <table class="table table-dark table-striped">
+        <tr>
+
+            <th> Book.id</th>
+            <th>Book.Name</th>
+            <th>Book.Qty</th>
+            <th>book.Price</th>
+            <th>Book.Author</th>
+            <th>Book.Is published</th>
+            <th>Actions</th>
+            
+        </tr>
+        {% for book in books %}
+            {% csrf_token %}
+            <tr>
+                <td>{{book.id}}</td>
+                <td>{{book.name}}</td>
+                <td>{{book.qty}}</td>
+                <td>{{book.price}}</td>
+                <td>{{book.author}}</td>
+                <td>{{book.is_published}}</td>
+                <td>
+                    {% if not inactive %}
+                    <form action="{% url 'update_book' book.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" value="Update">
+                    </form>
+
+                    <form action="{% url 'soft_delete_book' book.id %}" method="post">
+                        {% csrf_token %}
+                    <input type="submit" value="soft Delete">
+                    </form>
+
+                    {% endif %}
+                    {% if not active %}
+                    <form action="{% url 'restore_books' book.id %}" method="post">
+                        {% csrf_token %}
+                    <input type="submit" value="Restore">
+                    </form>
+                    {% endif %}
+
+                    <form action="{% url 'delete_book' book.id %}" method="post">
+                        {% csrf_token %}
+                    <input type="submit" class="btn btn-danger" value="Hard Delete">
+                    </form>   
+
+                </td>
+            </tr>
+        {% endfor %}
+        {% else %}
+            <h2>No Records Found</h2>  
+    {% endif %}
+    </table><br>
+    <a href="{% url 'home_page' %}"class="btn btn-warning">Home_page</a>
+        
+    </body>
+</html>
+
+
+

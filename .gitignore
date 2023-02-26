@@ -1,0 +1,6 @@
+Library/__pycache__/
+Users/__pycache__/
+Users/migrations/__pycache__/
+firstapp/__pycache__/
+firstapp/migrations/__pycache__/
+firstapp/views/__pycache__/
