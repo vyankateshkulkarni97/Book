@@ -5,6 +5,7 @@ from .models import Book
 # from django.contrib.auth.models import Book
 
 # Create your views here.
+@login_required
 @csrf_exempt
 def home(request):
     print(request.method)
@@ -37,26 +38,32 @@ def home(request):
         # return HttpResponse("Data Successful Add....!")
     elif request.method == "GET":
         return render (request ,"home_old.html" , context={"person":"vyankatesh"})# 27:26
+@login_required
 def show_book(request):
     return render(request,"show_book.html",{"books": Book.objects.filter(is_active=True), "active":True})
 
+@login_required
 def update_book(request , pk):
     book_obj = Book.objects.get(id = pk)
     return render(request,"home.html", context={"single_book":book_obj})
 
+@login_required
 def delete_book(request , pk):
     Book.objects.get(id=pk).delete()
     return redirect("all_active_books") 
 
+@login_required
 def soft_delete_book(request , pk):
     book_obj = Book.objects.get(id=pk)
     book_obj.is_active = False
     book_obj.save()
     return redirect("all_inactive_books")
 
+@login_required
 def show_inactive_book(request):
     return render(request, "show_book.html",{"books" :Book.objects.filter(is_active=False), "inactive":True})
 
+@login_required
 def restore_book(request , pk):
     book_obj = Book.objects.get(id=pk)
     book_obj.is_active = True
